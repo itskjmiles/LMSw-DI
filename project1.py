@@ -1,12 +1,10 @@
 import pymysql
 
-# Database connection parameters
 HOST = 'localhost'
 USER = ''
 PASSWORD = ''
 DATABASE = 'library_db'
 
-# Function to establish a database connection
 def connect_to_database():
     try:
         conn = pymysql.connect(host=HOST, user=USER, password=PASSWORD, database=DATABASE)
@@ -15,7 +13,6 @@ def connect_to_database():
         print("Error:", e)
         return None
 
-# Main menu function
 def main_menu():
     print("Welcome to the Library Management System with Database Integration!")
     print("****")
@@ -40,7 +37,6 @@ def main_menu():
     else:
         print("Invalid choice!")
 
-# Book menu function
 def book_menu():
     print("Book Operations:")
     print("1. Add a new book")
@@ -63,7 +59,6 @@ def book_menu():
     else:
         print("Invalid choice!")
 
-# User menu function
 def user_menu():
     print("User Operations:")
     print("1. Add a new user")
@@ -80,7 +75,6 @@ def user_menu():
     else:
         print("Invalid choice!")
 
-# Author menu function
 def author_menu():
     print("Author Operations:")
     print("1. Add a new author")
@@ -97,7 +91,6 @@ def author_menu():
     else:
         print("Invalid choice!")
 
-# Genre menu function
 def genre_menu():
     print("Genre Operations:")
     print("1. Add a new genre")
@@ -114,7 +107,6 @@ def genre_menu():
     else:
         print("Invalid choice!")
 
-# Function to add a new book
 def add_new_book():
     conn = connect_to_database()
     if conn:
@@ -123,7 +115,7 @@ def add_new_book():
             title = input("Enter the title of the book: ")
             author = input("Enter the author of the book: ")
             genre = input("Enter the genre of the book: ")
-            # Execute SQL query to insert the new book into the database
+            Execute SQL query to insert the new book into the database
             query = "INSERT INTO Books (title, author, genre) VALUES (%s, %s, %s)"
             cursor.execute(query, (title, author, genre))
             conn.commit()
@@ -134,7 +126,6 @@ def add_new_book():
             cursor.close()
             conn.close()
 
-# Function to borrow a book
 def borrow_book():
     conn = connect_to_database()
     if conn:
@@ -142,7 +133,6 @@ def borrow_book():
             cursor = conn.cursor()
             book_id = input("Enter the ID of the book to borrow: ")
             user_id = input("Enter your user ID: ")
-            # Execute SQL query to update book status and borrower ID
             query = "UPDATE Books SET status = 'Borrowed', borrower_id = %s WHERE id = %s"
             cursor.execute(query, (user_id, book_id))
             conn.commit()
@@ -153,14 +143,12 @@ def borrow_book():
             cursor.close()
             conn.close()
 
-# Function to return a book
 def return_book():
     conn = connect_to_database()
     if conn:
         try:
             cursor = conn.cursor()
             book_id = input("Enter the ID of the book to return: ")
-            # Execute SQL query to update book status and borrower ID
             query = "UPDATE Books SET status = 'Available', borrower_id = NULL WHERE id = %s"
             cursor.execute(query, (book_id,))
             conn.commit()
@@ -171,14 +159,12 @@ def return_book():
             cursor.close()
             conn.close()
 
-# Function to search for a book
 def search_book():
     conn = connect_to_database()
     if conn:
         try:
             cursor = conn.cursor()
             title = input("Enter the title of the book to search for: ")
-            # Execute SQL query to search for the book by title
             query = "SELECT * FROM Books WHERE title LIKE %s"
             cursor.execute(query, ('%' + title + '%',))
             books = cursor.fetchall()
@@ -200,13 +186,11 @@ def search_book():
             cursor.close()
             conn.close()
 
-# Function to display all books
 def display_all_books():
     conn = connect_to_database()
     if conn:
         try:
             cursor = conn.cursor()
-            # Execute SQL query to fetch all books
             query = "SELECT * FROM Books"
             cursor.execute(query)
             books = cursor.fetchall()
@@ -228,7 +212,6 @@ def display_all_books():
             cursor.close()
             conn.close()
 
-# Function to add a new user
 def add_new_user():
     conn = connect_to_database()
     if conn:
@@ -236,7 +219,6 @@ def add_new_user():
             cursor = conn.cursor()
             name = input("Enter the name of the user: ")
             email = input("Enter the email of the user: ")
-            # Execute SQL query to insert the new user into the database
             query = "INSERT INTO Users (name, email) VALUES (%s, %s)"
             cursor.execute(query, (name, email))
             conn.commit()
@@ -247,7 +229,6 @@ def add_new_user():
             cursor.close()
             conn.close()
 
-# Function to view user details
 def view_user_details():
     conn = connect_to_database()
     if conn:
@@ -271,13 +252,11 @@ def view_user_details():
             cursor.close()
             conn.close()
 
-# Function to display all users
 def display_all_users():
     conn = connect_to_database()
     if conn:
         try:
             cursor = conn.cursor()
-            # Execute SQL query to fetch all user details
             query = "SELECT * FROM Users"
             cursor.execute(query)
             users = cursor.fetchall()
@@ -296,14 +275,12 @@ def display_all_users():
             cursor.close()
             conn.close()
 
-# Function to add a new author
 def add_new_author():
     conn = connect_to_database()
     if conn:
         try:
             cursor = conn.cursor()
             name = input("Enter the name of the author: ")
-            # Execute SQL query to insert the new author into the database
             query = "INSERT INTO Authors (name) VALUES (%s)"
             cursor.execute(query, (name,))
             conn.commit()
@@ -314,14 +291,12 @@ def add_new_author():
             cursor.close()
             conn.close()
 
-# Function to view author details
 def view_author_details():
     conn = connect_to_database()
     if conn:
         try:
             cursor = conn.cursor()
             author_id = input("Enter the ID of the author: ")
-            # Execute SQL query to retrieve author details based on the author ID
             query = "SELECT * FROM Authors WHERE id = %s"
             cursor.execute(query, (author_id,))
             author = cursor.fetchone()
@@ -337,13 +312,11 @@ def view_author_details():
             cursor.close()
             conn.close()
 
-# Function to display all authors
 def display_all_authors():
     conn = connect_to_database()
     if conn:
         try:
             cursor = conn.cursor()
-            # Execute SQL query to fetch all author details
             query = "SELECT * FROM Authors"
             cursor.execute(query)
             authors = cursor.fetchall()
@@ -361,14 +334,12 @@ def display_all_authors():
             cursor.close()
             conn.close()
 
-# Function to add a new genre
 def add_new_genre():
     conn = connect_to_database()
     if conn:
         try:
             cursor = conn.cursor()
             name = input("Enter the name of the genre: ")
-            # Execute SQL query to insert the new genre into the database
             query = "INSERT INTO Genres (name) VALUES (%s)"
             cursor.execute(query, (name,))
             conn.commit()
@@ -379,14 +350,12 @@ def add_new_genre():
             cursor.close()
             conn.close()
 
-# Function to view genre details
 def view_genre_details():
     conn = connect_to_database()
     if conn:
         try:
             cursor = conn.cursor()
             genre_id = input("Enter the ID of the genre: ")
-            # Execute SQL query to retrieve genre details based on the genre ID
             query = "SELECT * FROM Genres WHERE id = %s"
             cursor.execute(query, (genre_id,))
             genre = cursor.fetchone()
@@ -402,13 +371,11 @@ def view_genre_details():
             cursor.close()
             conn.close()
 
-# Function to display all genres
 def display_all_genres():
     conn = connect_to_database()
     if conn:
         try:
             cursor = conn.cursor()
-            # Execute SQL query to fetch all genre details
             query = "SELECT * FROM Genres"
             cursor.execute(query)
             genres = cursor.fetchall()
